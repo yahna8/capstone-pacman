@@ -1,0 +1,63 @@
+using System;
+using UnityEngine;
+
+public class ScoreManager : MonoBehaviour
+{
+    public static ScoreManager Instance { get; private set; }
+
+    [SerializeField] private int pelletPoints = 10;
+    [SerializeField] private int powerPelletPoints = 50;
+
+    private int score;
+    private int pelletsRemaining;
+
+    public event Action<int> OnScoreChanged;
+    public event Action<int> OnPelletsRemainingChanged;
+
+    public int Score => score;
+    public int PelletsRemaining => pelletsRemaining;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        RecountPelletsInScene();
+        ResetScore();
+    }
+
+    public void ResetScore()
+    {
+        score = 0;
+        OnScoreChanged?.Invoke(score);
+    }
+
+    public void AddPoints(int amount)
+    {
+        score += amount;
+        OnScoreChanged?.Invoke(score);
+    }
+
+    public void RecountPelletsInScene()
+    {
+        int normal = GameObject.FindGameObjectsWithTag("Pellet").Length;
+        int power = GameObject.FindGameObjectsWithTag("PowerPellet").Length;
+        pelletsRemaining = normal + power;
+        OnPelletsRemainingChanged?.Invoke(pelletsRemaining);
+    }
+
+    public void NotifyPelletConsumed(bool isPowerPellet)
+    {
+        AddPoints(isPowerPellet ? powerPelletPoints : pelletPoints);
+
+        pelletsRemaining = Mathf.Max(0, pelletsRemaining - 1);
+        OnPelletsRemainingChanged?.Invoke(pelletsRemaining);
+    }
+}
