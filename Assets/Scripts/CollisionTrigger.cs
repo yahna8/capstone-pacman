@@ -33,7 +33,11 @@ public class CollisionTrigger : MonoBehaviour
         if (hit.collider.CompareTag("Ghost"))
         {
             if (gameStateManager != null)
-                gameStateManager.PlayerIsDead = true;
+            {
+                gameStateManager.NotifyPlayerDied();
+            }
+
+            return;
         }
     }
 }

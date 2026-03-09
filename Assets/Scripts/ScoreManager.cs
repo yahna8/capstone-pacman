@@ -5,6 +5,7 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
 
+    [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private int pelletPoints = 10;
     [SerializeField] private int powerPelletPoints = 50;
 
@@ -30,6 +31,12 @@ public class ScoreManager : MonoBehaviour
     private void Start()
     {
         RecountPelletsInScene();
+
+        if (gameStateManager != null)
+        {
+            gameStateManager.SetRemainingPellets(pelletsRemaining);
+        }
+        
         ResetScore();
     }
 
@@ -58,6 +65,12 @@ public class ScoreManager : MonoBehaviour
         AddPoints(isPowerPellet ? powerPelletPoints : pelletPoints);
 
         pelletsRemaining = Mathf.Max(0, pelletsRemaining - 1);
+
+        if (gameStateManager != null)
+        {
+            gameStateManager.SetRemainingPellets(pelletsRemaining);
+        }
+
         OnPelletsRemainingChanged?.Invoke(pelletsRemaining);
     }
 }

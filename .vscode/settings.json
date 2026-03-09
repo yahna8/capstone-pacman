@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "VRPacMan.slnx"
+    "dotnet.defaultSolution": "capstone-pacman.slnx"
 }
