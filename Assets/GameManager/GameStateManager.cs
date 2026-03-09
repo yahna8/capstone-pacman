@@ -54,6 +54,31 @@ public class GameStateManager : MonoBehaviour
         state.EnterState(this);
     }
 
+    public bool IsInState(GameBaseState state)
+    {
+        return currentState == state;
+    }
+
+    public int GetLives()
+    {
+        return Lives;
+    }
+
+    public int GetRemainingPellets()
+    {
+        return RemainingPellets;
+    }
+
+    public void SetRemainingPellets(int pellets)
+    {
+        RemainingPellets = pellets;
+    }
+
+    public void NotifyPlayerDied()
+    {
+        PlayerIsDead = true;
+    }
+
     public void OnCollisionEnter(Collision collision)
     {
         currentState.OnCollisionEnter(this);
