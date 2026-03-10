@@ -4144,35 +4144,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8852189906148080971, guid: f3a05f32763e2a34c8e4eaf14d61e6c6, type: 3}
   m_PrefabInstance: {fileID: 5242743650879199055}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1856600007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1856600006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0030aac97017d01469ff2f119f797af8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GhostAI
-  player: {fileID: 0}
-  scatterPoints:
-  - {fileID: 337517847}
-  - {fileID: 1856536773}
-  - {fileID: 235565995}
-  - {fileID: 974111146}
-  chaseSpeed: 3.5
-  scatterSpeed: 3
-  frightenedSpeed: 2
-  turnSmooth: 12
-  frightenedDuration: 6
-  gravity: -9.81
-  state: 0
-  applyStateColor: 1
-  scatterColor: {r: 1, g: 0.5, b: 1, a: 1}
-  chaseColor: {r: 1, g: 0.2, b: 0.2, a: 1}
-  frightenedColor: {r: 0.2, g: 0.6, b: 1, a: 1}
 --- !u!1 &1962323914
 GameObject:
   m_ObjectHideFlags: 0
@@ -4950,10 +4921,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8852189906148080971, guid: f3a05f32763e2a34c8e4eaf14d61e6c6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1856600007}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3a05f32763e2a34c8e4eaf14d61e6c6, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

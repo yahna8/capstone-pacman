@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8181901752452752679}
   - component: {fileID: 8881282526299936676}
   - component: {fileID: 4610085665633203257}
+  - component: {fileID: 6723215556348189012}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Ghost
@@ -139,3 +140,30 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6723215556348189012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8852189906148080971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1b2c3d4e5f60718293a4b5c6d7e8f90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostStateManager
+  homeTransform: {fileID: 0}
+  spawnTransform: {fileID: 0}
+  ForceSpawn: 0
+  ForceChase: 0
+  ForceScatter: 0
+  ForceFrightened: 0
+  ForceEaten: 0
+  SpawnReached: 0
+  ShouldEnterChase: 0
+  ShouldEnterScatter: 0
+  IsFrightened: 0
+  IsEaten: 0
+  ReachedHome: 0
+  FrightenedSeconds: 6
+  FrightenedTimer: 0

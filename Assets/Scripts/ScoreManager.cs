@@ -8,12 +8,16 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private int pelletPoints = 10;
     [SerializeField] private int powerPelletPoints = 50;
+    [SerializeField] private int ghostEatenPoints = 200;
 
     private int score;
     private int pelletsRemaining;
 
     public event Action<int> OnScoreChanged;
     public event Action<int> OnPelletsRemainingChanged;
+    public event Action<bool> OnPelletConsumed;
+    public event Action OnPowerPelletConsumed;
+    public event Action<int> OnGhostEaten;
 
     public int Score => score;
     public int PelletsRemaining => pelletsRemaining;
@@ -72,5 +76,15 @@ public class ScoreManager : MonoBehaviour
         }
 
         OnPelletsRemainingChanged?.Invoke(pelletsRemaining);
+        OnPelletConsumed?.Invoke(isPowerPellet);
+
+        if (isPowerPellet)
+            OnPowerPelletConsumed?.Invoke();
+    }
+
+    public void NotifyGhostEaten()
+    {
+        AddPoints(ghostEatenPoints);
+        OnGhostEaten?.Invoke(ghostEatenPoints);
     }
 }

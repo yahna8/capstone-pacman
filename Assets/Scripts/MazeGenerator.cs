@@ -74,6 +74,7 @@ public class MazeBuilder : MonoBehaviour
                         {
                             GameObject pellet = Instantiate(pelletPrefab, transform);
                             pellet.transform.localPosition = localPos + mazeOrigin + Vector3.up * 0.1f;
+                            ConfigurePelletInstance(pellet, "Pellet");
                         }
                         break;
                     case 2: // Power pellet
@@ -81,6 +82,7 @@ public class MazeBuilder : MonoBehaviour
                         {
                             GameObject powerPellet = Instantiate(powerPelletPrefab, transform);
                             powerPellet.transform.localPosition = localPos + mazeOrigin + Vector3.up * 0.1f;
+                            ConfigurePelletInstance(powerPellet, "PowerPellet");
                         }
                         break;
                     case 3: // Ghost spawn
@@ -96,5 +98,20 @@ public class MazeBuilder : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void ConfigurePelletInstance(GameObject pelletObject, string tagName)
+    {
+        if (pelletObject == null)
+            return;
+
+        // Runtime guard: keep generated pellets interactible even if prefab settings drift.
+        pelletObject.tag = tagName;
+
+        Collider col = pelletObject.GetComponent<Collider>();
+        if (col == null)
+            col = pelletObject.AddComponent<SphereCollider>();
+
+        col.isTrigger = true;
     }
 }

@@ -76,6 +76,12 @@ public class GameStateManager : MonoBehaviour
 
     public void NotifyPlayerDied()
     {
+        if (PlayerIsDead)
+            return;
+
+        if (!IsInState(PlayingState))
+            return;
+
         PlayerIsDead = true;
     }
 

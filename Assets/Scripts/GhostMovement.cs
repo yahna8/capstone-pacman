@@ -42,16 +42,22 @@ public class GhostMovement : MonoBehaviour
     private Vector3 verticalVelocity;
     private int scatterIndex = 0;
     private float frightenedTimer = 0f;
+    private GhostStateManager ghostStateManager;
 
     void Awake()
     {
         controller = GetComponent<CharacterController>();
         rend = GetComponentInChildren<Renderer>();
+        ghostStateManager = GetComponent<GhostStateManager>();
         ApplyColorForState();
     }
 
     void Update()
     {
+        // If the new GhostStateManager is active, let it own movement/state.
+        if (ghostStateManager != null && ghostStateManager.enabled)
+            return;
+
         // --- DEBUG INPUT: change states with 1/2/3 keys ---
         if (Keyboard.current != null)
         {
