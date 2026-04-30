@@ -4737,26 +4737,45 @@ MonoBehaviour:
   m_GameObject: {fileID: 1856600006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0030aac97017d01469ff2f119f797af8, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c6cb2e979908f040ab2efd6cb22601b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GhostAI
-  player: {fileID: 0}
-  scatterPoints:
-  - {fileID: 337517847}
-  - {fileID: 1856536773}
-  - {fileID: 235565995}
-  - {fileID: 974111146}
+  m_EditorClassIdentifier: Assembly-CSharp::GhostStateManager
+  ghostType: 0
+  modeController: {fileID: 0}
+  scoreManager: {fileID: 0}
+  playerTransform: {fileID: 0}
+  scatterCornerTransform: {fileID: 0}
+  homeTransform: {fileID: 0}
+  spawnTransform: {fileID: 0}
   chaseSpeed: 3.5
-  scatterSpeed: 3
   frightenedSpeed: 2
+  returnSpeed: 4
+  useMazePathing: 1
   turnSmooth: 12
-  frightenedDuration: 6
   gravity: -9.81
-  state: 0
-  applyStateColor: 1
-  scatterColor: {r: 1, g: 0.5, b: 1, a: 1}
-  chaseColor: {r: 1, g: 0.2, b: 0.2, a: 1}
-  frightenedColor: {r: 0.2, g: 0.6, b: 1, a: 1}
+  arriveDistance: 0.25
+  frightenedRetreatDistance: 3
+  pinkyLookAheadDistance: 4
+  inkyLookAheadDistance: 2
+  clydeScatterDistance: 8
+  playerHeadingVelocityThreshold: 0.1
+  ForceSpawn: 0
+  ForceChase: 0
+  ForceScatter: 0
+  ForceFrightened: 0
+  ForceEaten: 0
+  forceRespawn: 0
+  useTimedPatrolModes: 1
+  SpawnReached: 0
+  ShouldEnterChase: 0
+  ShouldEnterScatter: 0
+  IsFrightened: 0
+  IsEaten: 0
+  ReachedHome: 0
+  FrightenedSeconds: 6
+  FrightenedTimer: 0
+  hasMoveTarget: 0
+  currentMoveTarget: {x: 0, y: 0, z: 0}
 --- !u!1 &1883077570
 GameObject:
   m_ObjectHideFlags: 0
@@ -4775,6 +4794,7 @@ GameObject:
   - component: {fileID: 1883077583}
   - component: {fileID: 1883077582}
   - component: {fileID: 1883077584}
+  - component: {fileID: 1883077585}
   m_Layer: 0
   m_Name: XR Origin (VR)
   m_TagString: Player
@@ -5007,6 +5027,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapToggle
   mapUI: {fileID: 100397719}
+--- !u!114 &1883077585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883077570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b62ed2e46cc74c10ad5c604a01143c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollisionTrigger
+  scoreManager: {fileID: 629290918}
+  gameStateManager: {fileID: 420463349}
 --- !u!1 &1937900645
 GameObject:
   m_ObjectHideFlags: 0

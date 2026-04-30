@@ -67,5 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "capstone-pacman.slnx"
+    "dotnet.defaultSolution": "capstone-pacman.slnx",
+    "dotnet.preferCSharpExtension": true
 }
