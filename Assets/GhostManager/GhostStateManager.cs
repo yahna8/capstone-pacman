@@ -24,6 +24,7 @@ public class GhostStateManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GhostType ghostType = GhostType.Blinky;
+    [SerializeField] private GameStateManager gameStateManager;
     [SerializeField] private GhostModeController modeController;
     [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private Transform playerTransform;
@@ -32,6 +33,7 @@ public class GhostStateManager : MonoBehaviour
     [SerializeField] private Transform spawnTransform;
 
     [Header("Speeds (m/s)")]
+    [SerializeField] private float speedMultiplier = 0.8f;
     [SerializeField] private float chaseSpeed = 3.5f;
     [SerializeField] private float frightenedSpeed = 2.0f;
     [SerializeField] private float returnSpeed = 4.0f;
@@ -97,9 +99,9 @@ public class GhostStateManager : MonoBehaviour
     public Transform ScatterCornerTransform => scatterCornerTransform;
     public Transform HomeTransform => homeTransform;
     public Transform SpawnTransform => spawnTransform;
-    public float ChaseSpeed => chaseSpeed;
-    public float FrightenedSpeed => frightenedSpeed;
-    public float ReturnSpeed => returnSpeed;
+    public float ChaseSpeed => chaseSpeed * speedMultiplier;
+    public float FrightenedSpeed => frightenedSpeed * speedMultiplier;
+    public float ReturnSpeed => returnSpeed * speedMultiplier;
     public float FrightenedRetreatDistance => frightenedRetreatDistance;
 
     public static Vector3 GetSpawnOffsetForType(GhostType type)
@@ -139,10 +141,14 @@ public class GhostStateManager : MonoBehaviour
         Transform home,
         Transform spawn,
         ScoreManager score,
-        GhostModeController mode)
+        GhostModeController mode,
+        GameStateManager game)
     {
         if (player != null)
             playerTransform = player;
+
+        if (game != null)
+            gameStateManager = game;
 
         if (scatterCorner != null)
             scatterCornerTransform = scatterCorner;
@@ -239,6 +245,10 @@ public class GhostStateManager : MonoBehaviour
 
         DebugHotkeys();
         HandleForcedTransitions();
+
+        if (!CanAdvanceGhostAI())
+            return;
+
         SyncTimedPatrolMode();
         currentState.UpdateState(this);
     }
@@ -248,6 +258,7 @@ public class GhostStateManager : MonoBehaviour
         chaseSpeed = Mathf.Max(0f, chaseSpeed);
         frightenedSpeed = Mathf.Max(0f, frightenedSpeed);
         returnSpeed = Mathf.Max(0f, returnSpeed);
+        speedMultiplier = Mathf.Max(0f, speedMultiplier);
         turnSmooth = Mathf.Max(0f, turnSmooth);
         arriveDistance = Mathf.Max(0.01f, arriveDistance);
         frightenedRetreatDistance = Mathf.Max(0.25f, frightenedRetreatDistance);
@@ -287,6 +298,11 @@ public class GhostStateManager : MonoBehaviour
     public void ApplyEatenVisual()
     {
         ApplyRendererColor(eatenColor);
+    }
+
+    public bool CanAdvanceGhostAI()
+    {
+        return gameStateManager == null || gameStateManager.IsPlaying();
     }
 
     public bool IsInState(GhostBaseState state)
@@ -371,6 +387,9 @@ public class GhostStateManager : MonoBehaviour
 
     public void TriggerFrightenedFromPowerPellet()
     {
+        if (!CanAdvanceGhostAI())
+            return;
+
         if (currentState == EatenState || IsEaten)
             return;
 
@@ -387,11 +406,17 @@ public class GhostStateManager : MonoBehaviour
 
     public bool IsDangerousToPlayerOnCollision()
     {
+        if (!CanAdvanceGhostAI())
+            return false;
+
         return currentState == ChaseState || currentState == ScatterState;
     }
 
     public bool TryBecomeEatenFromPlayerCollision()
     {
+        if (!CanAdvanceGhostAI())
+            return false;
+
         if (currentState != FrightenedState || IsEaten)
             return false;
 
@@ -541,6 +566,9 @@ public class GhostStateManager : MonoBehaviour
 
         if (scoreManager == null)
             scoreManager = ScoreManager.Instance != null ? ScoreManager.Instance : FindAnyObjectByType<ScoreManager>();
+
+        if (gameStateManager == null)
+            gameStateManager = GameStateManager.Instance != null ? GameStateManager.Instance : FindAnyObjectByType<GameStateManager>();
 
         if (playerTransform == null)
         {

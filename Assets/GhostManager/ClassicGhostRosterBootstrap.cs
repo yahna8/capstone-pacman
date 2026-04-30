@@ -69,6 +69,9 @@ public static class ClassicGhostRosterBootstrap
 
         Transform player = FindPlayerTransform();
         ScoreManager scoreManager = ScoreManager.Instance != null ? ScoreManager.Instance : Object.FindAnyObjectByType<ScoreManager>();
+        GameStateManager gameStateManager = GameStateManager.Instance != null
+            ? GameStateManager.Instance
+            : Object.FindAnyObjectByType<GameStateManager>();
         GhostModeController modeController = GhostModeController.Instance != null
             ? GhostModeController.Instance
             : GhostModeController.GetOrCreate();
@@ -108,7 +111,8 @@ public static class ClassicGhostRosterBootstrap
                 home,
                 spawn,
                 scoreManager,
-                modeController);
+                modeController,
+                gameStateManager);
 
             ApplyGhostColor(ghost, RosterColors[i]);
             ghost.ResetToHomeAndRespawn();

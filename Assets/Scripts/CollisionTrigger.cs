@@ -34,7 +34,8 @@ public class CollisionTrigger : MonoBehaviour
                 return;
             }
 
-            if (ghost == null || ghost.IsDangerousToPlayerOnCollision())
+            bool gameIsPlaying = gameStateManager == null || gameStateManager.IsPlaying();
+            if (gameIsPlaying && (ghost == null || ghost.IsDangerousToPlayerOnCollision()))
             {
                 gameStateManager?.NotifyPlayerDied();
             }

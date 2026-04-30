@@ -20,6 +20,10 @@ public class GhostModeController : MonoBehaviour
     [Header("Mode Cycle")]
     [SerializeField] private bool startInScatter = true;
     [SerializeField] private bool runCycle = true;
+    [SerializeField] private bool requirePlayingState = true;
+
+    [Header("References")]
+    [SerializeField] private GameStateManager gameStateManager;
 
     [Header("Debug (runtime)")]
     [SerializeField] private GhostPatrolMode currentMode;
@@ -49,6 +53,8 @@ public class GhostModeController : MonoBehaviour
         }
 
         Instance = this;
+
+        ResolveMissingReferences();
     }
 
     private void OnEnable()
@@ -59,6 +65,11 @@ public class GhostModeController : MonoBehaviour
     private void Update()
     {
         if (!runCycle)
+            return;
+
+        ResolveMissingReferences();
+
+        if (requirePlayingState && gameStateManager != null && !gameStateManager.IsPlaying())
             return;
 
         modeTimer += Time.deltaTime;
@@ -96,5 +107,13 @@ public class GhostModeController : MonoBehaviour
         currentMode = mode;
         modeTimer = 0f;
         ModeChanged?.Invoke(currentMode);
+    }
+
+    private void ResolveMissingReferences()
+    {
+        if (gameStateManager == null)
+            gameStateManager = GameStateManager.Instance != null
+                ? GameStateManager.Instance
+                : FindAnyObjectByType<GameStateManager>();
     }
 }
