@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GameStateManager : MonoBehaviour
 {
+    public static GameStateManager Instance { get; private set; }
 
     GameBaseState currentState;
 
@@ -33,6 +34,17 @@ public class GameStateManager : MonoBehaviour
     public float LevelCompleteSeconds = 2f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
     void Start()
     {
         currentState = BootState;
@@ -57,6 +69,11 @@ public class GameStateManager : MonoBehaviour
     public bool IsInState(GameBaseState state)
     {
         return currentState == state;
+    }
+
+    public bool IsPlaying()
+    {
+        return currentState == PlayingState;
     }
 
     public int GetLives()

@@ -14,6 +14,7 @@ public class ScoreManager : MonoBehaviour
 
     public event Action<int> OnScoreChanged;
     public event Action<int> OnPelletsRemainingChanged;
+    public event Action OnPowerPelletConsumed;
 
     public int Score => score;
     public int PelletsRemaining => pelletsRemaining;
@@ -26,6 +27,9 @@ public class ScoreManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        if (gameStateManager == null)
+            gameStateManager = FindAnyObjectByType<GameStateManager>();
     }
 
     private void Start()
@@ -72,5 +76,10 @@ public class ScoreManager : MonoBehaviour
         }
 
         OnPelletsRemainingChanged?.Invoke(pelletsRemaining);
+
+        if (isPowerPellet)
+        {
+            OnPowerPelletConsumed?.Invoke();
+        }
     }
 }
