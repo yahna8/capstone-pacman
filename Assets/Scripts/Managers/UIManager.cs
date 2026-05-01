@@ -18,7 +18,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject winPanel;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource gameStartAudio;
+    [SerializeField] private AudioSource gameMenuAudio;
+
     private bool settingsOpen = false;
+    private bool wasInMenu = false;
 
     private void Start()
     {
@@ -48,6 +53,20 @@ public class UIManager : MonoBehaviour
             return;
         }
 
+        // Handle audio
+        bool isInMenu = gameStateManager.IsInState(gameStateManager.MenuState);
+
+        if (isInMenu)
+        {
+            if (mainMenuPanel != null)
+                mainMenuPanel.SetActive(true);
+
+            if (!wasInMenu && gameMenuAudio != null)
+            {
+                gameMenuAudio.Play();
+            }
+        }
+
         if (gameStateManager.IsInState(gameStateManager.MenuState))
         {
             if (mainMenuPanel != null) mainMenuPanel.SetActive(true);
@@ -68,6 +87,14 @@ public class UIManager : MonoBehaviour
         {
             if (hudRoot != null) hudRoot.SetActive(true);
         }
+
+        if (!isInMenu && wasInMenu)
+        {
+            if (gameMenuAudio != null)
+                gameMenuAudio.Stop();
+        }
+        // Tracks state change
+        wasInMenu = isInMenu;
     }
 
     private void HideAllPanels()
@@ -92,6 +119,10 @@ public class UIManager : MonoBehaviour
     public void StartGame()
     {
         settingsOpen = false;
+
+        // Plays sound when start button is clicked
+        if (gameStartAudio != null)
+            gameStartAudio.Play();
 
         if (gameStateManager != null)
             gameStateManager.PressStart();
