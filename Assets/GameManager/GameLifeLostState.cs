@@ -9,7 +9,8 @@ public class GameLifeLostState : GameBaseState
         Debug.Log("Life Lost");
         
         GameManager.PlayerIsDead = false;
-        GameManager.Lives--;
+        GameManager.Lives = Mathf.Max(0, GameManager.Lives - 1);
+        GameManager.ResetPlayerPosition();
 
         timer = GameManager.LifeLostSeconds;
 
