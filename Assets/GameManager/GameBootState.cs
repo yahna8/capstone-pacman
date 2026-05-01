@@ -7,8 +7,7 @@ public class GameBootState : GameBaseState
         Debug.Log("Booting Up...");
 
         // Temporary lines to initialize defaults
-        GameManager.Lives = 3;
-        GameManager.RemainingPellets = Mathf.Max(GameManager.RemainingPellets, 30);
+        GameManager.ResetRun();
 
         //Clear flags
         GameManager.StartPressed = false;

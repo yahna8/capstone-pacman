@@ -33,6 +33,12 @@ public class GameStateManager : MonoBehaviour
     public float LifeLostSeconds = 2f;
     public float LevelCompleteSeconds = 2f;
 
+    [Header("Reset References")]
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private Transform playerStartPoint;
+    [SerializeField] private CharacterController playerController;
+    [SerializeField] private ScoreManager scoreManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -99,6 +105,48 @@ public class GameStateManager : MonoBehaviour
     public void OnCollisionEnter(Collision collision)
     {
         currentState.OnCollisionEnter(this);
+    }
+
+    public void ResetRun()
+    {
+        Lives = 3;
+        PlayerIsDead = false;
+        StartPressed = false;
+        ResumePressed = false;
+        QuitToMenuPressed = false;
+        RestartPressed = false;
+
+        if (scoreManager != null)
+        {
+            scoreManager.ResetScore();
+            scoreManager.RecountPelletsInScene();
+            SetRemainingPellets(scoreManager.PelletsRemaining);
+        }
+
+        ResetPlayerPosition();
+    }
+
+    public void ResetPlayerPosition()
+    {
+        if (playerTransform == null || playerStartPoint == null) return;
+
+        var xrOrigin = playerTransform.GetComponent<Unity.XR.CoreUtils.XROrigin>();
+
+        if (xrOrigin != null)
+        {
+            // Disable CharacterController if used
+            var cc = xrOrigin.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+
+            // Reset XR Origin position
+            xrOrigin.transform.position = playerStartPoint.position;
+            xrOrigin.transform.rotation = playerStartPoint.rotation;
+
+            // Reset camera offset so head tracking doesn't offset you
+            xrOrigin.CameraFloorOffsetObject.transform.localPosition = Vector3.zero;
+
+            if (cc != null) cc.enabled = true;
+        }
     }
 
     // --- Helpers to call from UI buttons later ---

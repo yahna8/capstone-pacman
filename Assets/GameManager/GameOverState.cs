@@ -16,14 +16,12 @@ public class GameOverState : GameBaseState
     {
         if (GameManager.RestartPressed)
         {
-            GameManager.Lives = 3;
-            GameManager.PlayerIsDead = false;
-            GameManager.RemainingPellets = 30;
-
+            GameManager.ResetRun();
             GameManager.SwitchState(GameManager.CountdownState);
         }
         else if (GameManager.QuitToMenuPressed)
         {
+            GameManager.ResetRun();
             GameManager.SwitchState(GameManager.MenuState);
         }
     }
