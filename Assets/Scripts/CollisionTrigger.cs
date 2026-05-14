@@ -4,6 +4,13 @@ public class CollisionTrigger : MonoBehaviour
 {
     public ScoreManager scoreManager;
     public GameStateManager gameStateManager;
+    
+    [Header("Chomp Audio")]
+    public AudioSource audioSource;
+    public AudioClip chompA;
+    public AudioClip chompB;
+
+    private bool useFirstSound = true;
 
     private void Awake()
     {
@@ -12,6 +19,12 @@ public class CollisionTrigger : MonoBehaviour
 
         if (gameStateManager == null)
             gameStateManager = FindAnyObjectByType<GameStateManager>();
+    }
+
+    // Audio Debug
+    private void Start()
+    {
+        Debug.Log("CollisionTrigger ACTIVE on: " + gameObject.name);
     }
 
     // PELLETS & POWER PELLETS (Trigger-based)
@@ -50,6 +63,22 @@ public class CollisionTrigger : MonoBehaviour
             return false;
 
         scoreManager?.NotifyPelletConsumed(isPowerPellet);
+
+        // Pellet Audio
+        AudioClip clipToPlay = useFirstSound ? chompA : chompB;
+
+        if (clipToPlay != null)
+        {
+            Debug.Log(">>> PLAYING: " + clipToPlay.name);
+
+            AudioSource.PlayClipAtPoint(clipToPlay, transform.position);
+        }
+        else
+        {
+            Debug.LogWarning(">>> CHOMP CLIP IS NULL");
+        }
+
+        useFirstSound = !useFirstSound;
 
         Collider[] colliders = pelletObject.GetComponentsInChildren<Collider>();
         for (int i = 0; i < colliders.Length; i++)
